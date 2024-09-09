@@ -35,7 +35,7 @@ export default function App() {
   function handleToggleItem(id) {
     setItems((items) =>
       items.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item 
+        item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
   }
@@ -48,7 +48,12 @@ export default function App() {
     <div className="app">
       <Header />
       <Form onAddItem={handleAddItem} />
-      <GroceryList items={items} onDeleteItem={handleDeleteItem} onToggleItem={handleToggleItem} onClearItems={handleClearItems} />
+      <GroceryList
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onToggleItem={handleToggleItem}
+        onClearItems={handleClearItems}
+      />
       <Footer />
     </div>
   );
@@ -102,27 +107,44 @@ function Form({ onAddItem }) {
 }
 
 function GroceryList({ items, onDeleteItem, onToggleItem, onClearItems }) {
-
-  const[sortBy, setSortBy] = useState('input');
+  const [sortBy, setSortBy] = useState("input");
   let sortedItems;
 
-  if(sortBy === 'input'){
-    sortedItems = items;
+  // if (sortBy === "input") {
+  //   sortedItems = items;
+  // }
+
+  // if (sortBy === "name") {
+  //   sortedItems = items.slice().sort((a, b) => a.name.localeCompare(b.name));
+  // }
+
+  // if (sortBy === "checked") {
+  //   sortedItems = items.slice().sort((a, b) => b.checked - a.checked);
+  // }
+
+  switch (sortBy) {
+    case "name":
+      sortedItems = items.slice().sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case "checked":
+      sortedItems = items.slice().sort((a, b) => b.checked - a.checked);
+      break;
+    default:
+      sortedItems = items;
+      break;
   }
 
-  if (sortBy === 'name') {
-    sortedItems = items.slice().sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  if (sortBy === 'checked') {
-    sortedItems = items.slice().sort((a, b) => b.checked - a.checked);
-  }
   return (
     <>
       <div className="list">
         <ul>
           {sortedItems.map((item) => (
-            <Item item={item} key={item.id} onDeleteItem={onDeleteItem} onToggleItem={onToggleItem} />
+            <Item
+              item={item}
+              key={item.id}
+              onDeleteItem={onDeleteItem}
+              onToggleItem={onToggleItem}
+            />
           ))}
         </ul>
       </div>
@@ -141,7 +163,11 @@ function GroceryList({ items, onDeleteItem, onToggleItem, onClearItems }) {
 function Item({ item, onDeleteItem, onToggleItem }) {
   return (
     <li key={item.id}>
-      <input type="checkbox" checked={item.checked} onChange={() => onToggleItem(item.id)} />
+      <input
+        type="checkbox"
+        checked={item.checked}
+        onChange={() => onToggleItem(item.id)}
+      />
       <span style={item.checked ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.name}
       </span>
