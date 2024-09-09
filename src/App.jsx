@@ -102,17 +102,29 @@ function Form({ onAddItem }) {
 }
 
 function GroceryList({ items, onDeleteItem, onToggleItem, onClearItems }) {
+
+  const[sortBy, setSortBy] = useState('input');
+  let sortedItems;
+
+  if(sortBy === 'input'){
+    sortedItems = items;
+  }
+
+  if (sortBy === 'name') {
+    sortedItems = items.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   return (
     <>
       <div className="list">
         <ul>
-          {items.map((item) => (
+          {sortedItems.map((item) => (
             <Item item={item} key={item.id} onDeleteItem={onDeleteItem} onToggleItem={onToggleItem} />
           ))}
         </ul>
       </div>
       <div className="actions">
-        <select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="input">Urutkan berdasarkan urutan input</option>
           <option value="name">Urutkan berdasarkan nama barang</option>
           <option value="checked">Urutkan berdasarkan ceklis</option>
