@@ -114,6 +114,9 @@ function GroceryList({ items, onDeleteItem, onToggleItem, onClearItems }) {
     sortedItems = items.slice().sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  if (sortBy === 'checked') {
+    sortedItems = items.slice().sort((a, b) => b.checked - a.checked);
+  }
   return (
     <>
       <div className="list">
